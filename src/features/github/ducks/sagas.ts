@@ -33,12 +33,13 @@ const readUsers = async (since: number): Promise<TResult> => {
 
   const linkHeader = usersResponse.headers.get("link");
 
-  const newSince = linkHeader?.search(/(?<=since=)\d+/) ?? null;
+  const newSinceMatchResult = linkHeader?.match(/(?<=since=)\d+/)?.[0]
+  const newSince = Number(newSinceMatchResult)
 
   return {
     isOk: true,
     users,
-    since: newSince
+    since: Number.isNaN(newSince) ? null : newSince
   };
 };
 
@@ -46,7 +47,7 @@ function* fetchPerson() {
   const prevSince: number = yield select(selectSince);
 
   try {
-    const { isOk, users, since: newSince } = yield call(readUsers, prevSince);
+    const { isOk, users, since } = yield call(readUsers, prevSince);
 
     if (!isOk) {
       const failureAction: TFailureAction = {
@@ -60,7 +61,7 @@ function* fetchPerson() {
       type: ACTION_TYPE.SUCCESS,
       payload: {
         users,
-        since: typeof newSince === "number" ? newSince : null
+        since,
       }
     };
 

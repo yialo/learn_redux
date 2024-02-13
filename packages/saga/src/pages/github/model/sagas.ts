@@ -1,6 +1,6 @@
 import { call, put, select, takeLatest } from 'redux-saga/effects';
-import { PAGE_SIZE } from '../constants';
-import { TUser } from '../types';
+import { PAGE_SIZE } from '../config/constants';
+import { TUser } from '../config/types';
 import { ACTION_TYPE } from './action-types';
 import { selectSince } from './selectors';
 import { TFailureAction, TSuccessAction } from './types';

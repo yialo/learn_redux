@@ -1,4 +1,4 @@
-import { PROCESS } from "../../../enums";
+import { PROCESS } from "../../../shared/config";
 import { ACTION_TYPE } from "./action-types";
 import { TGithubState, TReducer } from "./types";
 import { createReducer } from '@reduxjs/toolkit';

@@ -1,8 +1,8 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { PROCESS } from '../../../enums';
-import { fetchUsers } from '../ducks/actions';
-import { selectError, selectProcess, selectUsers } from '../ducks/selectors';
-import style from './style.module.scss';
+import { PROCESS } from '../../../shared/config';
+import { fetchUsers } from '../model/actions';
+import { selectError, selectProcess, selectUsers } from '../model/selectors';
+import style from './self.module.scss';
 
 export const GithubPage: React.FC = () => {
   const dispatch = useDispatch();

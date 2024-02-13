@@ -1,5 +1,5 @@
-import { TProcess } from '../../../enums';
-import { TUser } from '../types';
+import { TProcess } from '../../../shared/config';
+import { TUser } from '../config/types';
 import { ACTION_TYPE } from './action-types';
 
 type TSuccessPayload = {

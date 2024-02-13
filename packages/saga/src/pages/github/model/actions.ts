@@ -1,7 +1,13 @@
 import { createAction } from '@reduxjs/toolkit';
 import { User } from '../config';
-import { ACTION_TYPE } from './action-types';
 import { SuccessPayload } from './types';
+
+const ACTION_TYPE = {
+  REQUEST: 'REQUEST',
+  SUCCESS: 'SUCCESS',
+  FAILURE: 'FAILURE',
+  RESET: 'RESET',
+} as const;
 
 export const fetchUsers = createAction(ACTION_TYPE.REQUEST);
 

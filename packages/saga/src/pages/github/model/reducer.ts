@@ -1,6 +1,6 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { PROCESS } from '@/shared/config';
-import { ACTION_TYPE } from './action-types';
+import * as actions from './actions';
 import { TGithubState } from './types';
 
 const INITIAL_STATE: TGithubState = {
@@ -10,54 +10,27 @@ const INITIAL_STATE: TGithubState = {
   since: 0,
 };
 
-export const githubReducer = (prevState, action) => {
-  const state = prevState ?? INITIAL_STATE;
-
-  switch (action.type) {
-    case ACTION_TYPE.REQUEST: {
-      if (state.process === PROCESS.LOADING) {
-        return state;
-      }
-
-      return {
-        ...state,
-        process: PROCESS.LOADING,
-      };
+export const reducer = createReducer(INITIAL_STATE, (builder) => {
+  builder.addCase(actions.fetchUsers, (state) => {
+    if (state.process !== PROCESS.LOADING) {
+      state.process = PROCESS.LOADING;
     }
+  });
 
-    case ACTION_TYPE.SUCCESS: {
-      if (state.process !== PROCESS.LOADING) {
-        return state;
-      }
-
-      const { users, since } = action.payload;
-
-      return {
-        ...state,
-        process: PROCESS.SUCCESS,
-        users: [...state.users, ...users],
-        since: since ?? state.since,
-      };
+  builder.addCase(actions.success, (state, { payload }) => {
+    if (state.process === PROCESS.LOADING) {
+      state.process = PROCESS.SUCCESS;
+      state.users.push(...payload.users);
+      state.since = payload.since ?? state.since;
     }
+  });
 
-    case ACTION_TYPE.FAILURE: {
-      if (state.process !== PROCESS.LOADING) {
-        return state;
-      }
-
-      return {
-        ...state,
-        process: PROCESS.FAILURE,
-        error: action.payload,
-      };
+  builder.addCase(actions.failure, (state, { payload }) => {
+    if (state.process === PROCESS.LOADING) {
+      state.process = PROCESS.FAILURE;
+      state.error = payload;
     }
+  });
 
-    case ACTION_TYPE.RESET:
-      return INITIAL_STATE;
-
-    default:
-      return state;
-  }
-};
-
-export const reducer = () => {};
+  builder.addCase(actions.reset, () => INITIAL_STATE);
+});

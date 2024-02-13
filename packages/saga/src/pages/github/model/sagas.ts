@@ -1,6 +1,5 @@
 import { call, put, select, takeLatest } from 'redux-saga/effects';
 import { PAGE_SIZE, User } from '../config';
-import { ACTION_TYPE } from './action-types';
 import * as actions from './actions';
 import { selectSince } from './selectors';
 
@@ -64,5 +63,5 @@ function* fetchPerson() {
 }
 
 export function* githubSaga() {
-  yield takeLatest(ACTION_TYPE.REQUEST, fetchPerson);
+  yield takeLatest(actions.fetchUsers.type, fetchPerson);
 }

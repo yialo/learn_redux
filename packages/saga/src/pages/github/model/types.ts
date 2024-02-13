@@ -1,31 +1,14 @@
-import { TProcess } from '../../../shared/config';
-import { TUser } from '../config/types';
-import { ACTION_TYPE } from './action-types';
+import { TProcess } from '@/shared/config';
+import { User } from '../config';
 
-type TSuccessPayload = {
-  users: TUser[];
+export type SuccessPayload = {
+  users: User[];
   since: number | null;
 };
-
-export type TRequestAction = TAction<typeof ACTION_TYPE.REQUEST>;
-export type TSuccessAction = TAction<
-  typeof ACTION_TYPE.SUCCESS,
-  TSuccessPayload
->;
-export type TFailureAction = TAction<typeof ACTION_TYPE.FAILURE, Error>;
-export type TResetAction = TAction<typeof ACTION_TYPE.RESET>;
-
-type TGithubAction =
-  | TRequestAction
-  | TSuccessAction
-  | TFailureAction
-  | TResetAction;
 
 export type TGithubState = {
   process: TProcess;
   error: Error | null;
-  users: TUser[];
+  users: User[];
   since: number;
 };
-
-export type TReducer = Reducer<TGithubState, TGithubAction>;

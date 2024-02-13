@@ -1,13 +1,12 @@
 import { call, put, select, takeLatest } from 'redux-saga/effects';
-import { PAGE_SIZE } from '../config/constants';
-import { TUser } from '../config/types';
+import { PAGE_SIZE, User } from '../config';
 import { ACTION_TYPE } from './action-types';
+import * as actions from './actions';
 import { selectSince } from './selectors';
-import { TFailureAction, TSuccessAction } from './types';
 
 type TSuccessResult = {
   isOk: true;
-  users: TUser[];
+  users: User[];
   since: number | null;
 };
 
@@ -28,7 +27,7 @@ const readUsers = async (since: number): Promise<TResult> => {
     };
   }
 
-  const users: TUser[] = await usersResponse.json();
+  const users: User[] = await usersResponse.json();
 
   const linkHeader = usersResponse.headers.get('link');
 
@@ -49,28 +48,17 @@ function* fetchPerson() {
     const { isOk, users, since } = yield call(readUsers, prevSince);
 
     if (!isOk) {
-      const failureAction: TFailureAction = {
-        type: ACTION_TYPE.FAILURE,
-        payload: new Error('Someting went wrong'),
-      };
+      const failureAction = actions.failure(new Error('Someting went wrong'));
       yield put(failureAction);
     }
 
-    const successAction: TSuccessAction = {
-      type: ACTION_TYPE.SUCCESS,
-      payload: {
-        users,
-        since,
-      },
-    };
+    const successAction = actions.success(users, since);
 
     yield put(successAction);
   } catch (error) {
-    const failureAction: TFailureAction = {
-      type: ACTION_TYPE.FAILURE,
-      payload:
-        error instanceof Error ? error : new Error('Something went wrong'),
-    };
+    const failureAction = actions.failure(
+      error instanceof Error ? error : new Error('Something went wrong'),
+    );
     yield put(failureAction);
   }
 }

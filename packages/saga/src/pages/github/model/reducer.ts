@@ -1,16 +1,16 @@
-import { PROCESS } from "../../../shared/config";
-import { ACTION_TYPE } from "./action-types";
-import { TGithubState, TReducer } from "./types";
 import { createReducer } from '@reduxjs/toolkit';
+import { PROCESS } from '@/shared/config';
+import { ACTION_TYPE } from './action-types';
+import { TGithubState } from './types';
 
 const INITIAL_STATE: TGithubState = {
   process: PROCESS.IDLE,
   error: null,
   users: [],
-  since: 0
+  since: 0,
 };
 
-export const githubReducer: TReducer = (prevState, action) => {
+export const githubReducer = (prevState, action) => {
   const state = prevState ?? INITIAL_STATE;
 
   switch (action.type) {
@@ -21,7 +21,7 @@ export const githubReducer: TReducer = (prevState, action) => {
 
       return {
         ...state,
-        process: PROCESS.LOADING
+        process: PROCESS.LOADING,
       };
     }
 
@@ -36,7 +36,7 @@ export const githubReducer: TReducer = (prevState, action) => {
         ...state,
         process: PROCESS.SUCCESS,
         users: [...state.users, ...users],
-        since: since ?? state.since
+        since: since ?? state.since,
       };
     }
 
@@ -48,7 +48,7 @@ export const githubReducer: TReducer = (prevState, action) => {
       return {
         ...state,
         process: PROCESS.FAILURE,
-        error: action.payload
+        error: action.payload,
       };
     }
 
@@ -60,4 +60,4 @@ export const githubReducer: TReducer = (prevState, action) => {
   }
 };
 
-export const createReducer = () => {};
+export const reducer = () => {};

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Provider } from 'react-redux';
-import { GithubPage } from '../../pages/github';
+import { GithubPage } from '@/pages/github';
 import { store } from '../store';
 import './global.scss';
 

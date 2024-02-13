@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { PROCESS } from '../../../shared/config';
+import { PROCESS } from '@/shared/config';
 import { fetchUsers } from '../model/actions';
 import { selectError, selectProcess, selectUsers } from '../model/selectors';
 import style from './self.module.scss';

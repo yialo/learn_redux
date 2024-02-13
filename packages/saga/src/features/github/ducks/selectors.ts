@@ -1,4 +1,4 @@
-import { TState } from "../../../store/types";
+import { TState } from '../../../store';
 
 export const selectUsers = (state: TState) => state.github.users;
 export const selectProcess = (state: TState) => state.github.process;

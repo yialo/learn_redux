@@ -1,1 +1,1 @@
-export { GithubPage } from "./self";
+export { GithubPage } from './self';

@@ -1,13 +1,10 @@
-import * as React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { PROCESS } from "../../../enums";
+import { useDispatch, useSelector } from 'react-redux';
+import { PROCESS } from '../../../enums';
+import { fetchUsers } from '../ducks/actions';
+import { selectError, selectProcess, selectUsers } from '../ducks/selectors';
+import style from './style.module.scss';
 
-import { fetchUsers } from "../ducks/actions";
-import { selectUsers, selectProcess, selectError } from "../ducks/selectors";
-
-import style from "./style.module.scss";
-
-export const GithubPage = () => {
+export const GithubPage: React.FC = () => {
   const dispatch = useDispatch();
 
   const process = useSelector(selectProcess);
@@ -16,10 +13,10 @@ export const GithubPage = () => {
 
   const renderProcessIndicator = () => {
     switch (process) {
-      case "LOADING":
+      case 'LOADING':
         return <div>Loading...</div>;
 
-      case "FAILURE":
+      case 'FAILURE':
         return error ? <div>{`Error: ${error.message}`}</div> : null;
 
       default:

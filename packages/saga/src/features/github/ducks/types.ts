@@ -1,6 +1,6 @@
-import { TProcess } from "../../../enums";
-import { TUser } from "../types";
-import { ACTION_TYPE } from "./action-types";
+import { TProcess } from '../../../enums';
+import { TUser } from '../types';
+import { ACTION_TYPE } from './action-types';
 
 type TSuccessPayload = {
   users: TUser[];

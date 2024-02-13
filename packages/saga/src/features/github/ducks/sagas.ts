@@ -1,10 +1,9 @@
-import { call, put, select, takeLatest } from "redux-saga/effects";
-
-import { PAGE_SIZE } from "../constants";
-import { TUser } from "../types";
-import { ACTION_TYPE } from "./action-types";
-import { selectSince } from "./selectors";
-import { TSuccessAction, TFailureAction } from "./types";
+import { call, put, select, takeLatest } from 'redux-saga/effects';
+import { PAGE_SIZE } from '../constants';
+import { TUser } from '../types';
+import { ACTION_TYPE } from './action-types';
+import { selectSince } from './selectors';
+import { TFailureAction, TSuccessAction } from './types';
 
 type TSuccessResult = {
   isOk: true;
@@ -20,26 +19,26 @@ type TResult = TSuccessResult | TFailureResult;
 
 const readUsers = async (since: number): Promise<TResult> => {
   const usersResponse = await window.fetch(
-    `https://api.github.com/users?per_page=${PAGE_SIZE}&since=${since}`
+    `https://api.github.com/users?per_page=${PAGE_SIZE}&since=${since}`,
   );
 
   if (!usersResponse.ok) {
     return {
-      isOk: false
+      isOk: false,
     };
   }
 
   const users: TUser[] = await usersResponse.json();
 
-  const linkHeader = usersResponse.headers.get("link");
+  const linkHeader = usersResponse.headers.get('link');
 
-  const newSinceMatchResult = linkHeader?.match(/(?<=since=)\d+/)?.[0]
-  const newSince = Number(newSinceMatchResult)
+  const newSinceMatchResult = linkHeader?.match(/(?<=since=)\d+/)?.[0];
+  const newSince = Number(newSinceMatchResult);
 
   return {
     isOk: true,
     users,
-    since: Number.isNaN(newSince) ? null : newSince
+    since: Number.isNaN(newSince) ? null : newSince,
   };
 };
 
@@ -52,7 +51,7 @@ function* fetchPerson() {
     if (!isOk) {
       const failureAction: TFailureAction = {
         type: ACTION_TYPE.FAILURE,
-        payload: new Error("Someting went wrong")
+        payload: new Error('Someting went wrong'),
       };
       yield put(failureAction);
     }
@@ -62,14 +61,15 @@ function* fetchPerson() {
       payload: {
         users,
         since,
-      }
+      },
     };
 
     yield put(successAction);
   } catch (error) {
     const failureAction: TFailureAction = {
       type: ACTION_TYPE.FAILURE,
-      payload: error instanceof Error ? error : new Error('Something went wrong'),
+      payload:
+        error instanceof Error ? error : new Error('Something went wrong'),
     };
     yield put(failureAction);
   }

@@ -1,7 +1,4 @@
-import { Reducer } from "redux";
-
 import { TProcess } from "../../../enums";
-import { TAction } from "../../../store/types";
 import { TUser } from "../types";
 import { ACTION_TYPE } from "./action-types";
 

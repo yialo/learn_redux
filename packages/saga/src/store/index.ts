@@ -1,14 +1,9 @@
-import { applyMiddleware, combineReducers, createStore } from "redux";
-import { composeWithDevTools } from "redux-devtools-extension";
+import { configureStore } from '@reduxjs/toolkit';
 import createSagaMiddleware from "redux-saga";
 import { all, call } from "redux-saga/effects";
 
 import { githubReducer } from "../features/github/ducks/reducer";
 import { githubSaga } from "../features/github/ducks/sagas";
-
-const rootReducer = combineReducers({
-  github: githubReducer
-});
 
 const rootSaga = function* () {
   yield all([call(githubSaga)]);
@@ -16,9 +11,17 @@ const rootSaga = function* () {
 
 const sagaMiddleware = createSagaMiddleware();
 
-const appliedMiddleware = applyMiddleware(sagaMiddleware);
-const enhancer = composeWithDevTools(appliedMiddleware);
-
-export const store = createStore(rootReducer, enhancer);
+export const store = configureStore({
+  reducer: {
+    github: githubReducer,
+  },
+  devTools: import.meta.env.MODE === "development",
+  middleware: (getDefaultMiddleware) => {
+      return getDefaultMiddleware({
+        thunk: false,
+      }).concat(sagaMiddleware);
+    },
+});
 
 sagaMiddleware.run(rootSaga);
+

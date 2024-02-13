@@ -1,6 +1,7 @@
 import { PROCESS } from "../../../enums";
 import { ACTION_TYPE } from "./action-types";
 import { TGithubState, TReducer } from "./types";
+import { createReducer } from '@reduxjs/toolkit';
 
 const INITIAL_STATE: TGithubState = {
   process: PROCESS.IDLE,
@@ -58,3 +59,5 @@ export const githubReducer: TReducer = (prevState, action) => {
       return state;
   }
 };
+
+export const createReducer = () => {};

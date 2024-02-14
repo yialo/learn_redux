@@ -1,34 +1,32 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { PROCESS } from '@/shared/config';
-import { fetchUsers } from '../model/actions';
-import { selectError, selectProcess, selectUsers } from '../model/selectors';
+import { GithubState } from '../config';
+import { githubAction, githubSelectors } from '../model';
 import style from './self.module.scss';
 
-export const GithubPage: React.FC = () => {
+export const GithubPage: React.FC<{ getLocalState: () => GithubState }> = ({
+  getLocalState,
+}) => {
   const dispatch = useDispatch();
 
-  const process = useSelector(selectProcess);
-  const error = useSelector(selectError);
-  const users = useSelector(selectUsers);
-
-  const renderProcessIndicator = () => {
-    switch (process) {
-      case 'LOADING':
-        return <div>Loading...</div>;
-
-      case 'FAILURE':
-        return error ? <div>{`Error: ${error.message}`}</div> : null;
-
-      default:
-        return null;
-    }
-  };
+  const process = useSelector(() => githubSelectors.process(getLocalState()));
+  const error = useSelector(() => githubSelectors.error(getLocalState()));
+  const users = useSelector(() => githubSelectors.users(getLocalState()));
 
   return (
     <main className={style.root}>
       <h1 className={style.title}>GitHub users</h1>
 
-      {renderProcessIndicator()}
+      {(() => {
+        switch (process) {
+          case 'LOADING':
+            return <div>Loading...</div>;
+          case 'FAILURE':
+            return error ? <div>{`Error: ${error.message}`}</div> : null;
+          default:
+            return null;
+        }
+      })()}
 
       {users.length > 0 ? (
         <ul className={style.userList}>
@@ -46,7 +44,7 @@ export const GithubPage: React.FC = () => {
         type="button"
         disabled={process === PROCESS.LOADING}
         onClick={() => {
-          dispatch(fetchUsers());
+          dispatch(githubAction.fetchUsers());
         }}
       >
         Load more

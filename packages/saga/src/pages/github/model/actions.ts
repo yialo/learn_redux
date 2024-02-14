@@ -1,6 +1,10 @@
 import { createAction } from '@reduxjs/toolkit';
 import { User } from '../config';
-import { SuccessPayload } from './types';
+
+type SuccessPayload = {
+  users: User[];
+  since: number | null;
+};
 
 const ACTION_TYPE = {
   REQUEST: 'REQUEST',

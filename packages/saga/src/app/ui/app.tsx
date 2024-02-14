@@ -7,7 +7,7 @@ import './global.scss';
 export const App: React.FC = () => {
   return (
     <Provider store={store}>
-      <GithubPage />
+      <GithubPage getLocalState={() => store.getState().github} />
     </Provider>
   );
 };

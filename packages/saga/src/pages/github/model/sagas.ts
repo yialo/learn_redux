@@ -1,21 +1,21 @@
 import { call, put, select, takeLatest } from 'redux-saga/effects';
 import { PAGE_SIZE, User } from '../config';
 import * as actions from './actions';
-import { selectSince } from './selectors';
+import { since as selectSince } from './selectors';
 
-type TSuccessResult = {
+type SuccessResult = {
   isOk: true;
   users: User[];
   since: number | null;
 };
 
-type TFailureResult = {
+type FailureResult = {
   isOk: false;
 };
 
-type TResult = TSuccessResult | TFailureResult;
-
-const readUsers = async (since: number): Promise<TResult> => {
+const readUsers = async (
+  since: number,
+): Promise<SuccessResult | FailureResult> => {
   const usersResponse = await window.fetch(
     `https://api.github.com/users?per_page=${PAGE_SIZE}&since=${since}`,
   );
@@ -47,7 +47,7 @@ function* fetchPerson() {
     const { isOk, users, since } = yield call(readUsers, prevSince);
 
     if (!isOk) {
-      const failureAction = actions.failure(new Error('Someting went wrong'));
+      const failureAction = actions.failure(new Error('Something went wrong'));
       yield put(failureAction);
     }
 
@@ -62,6 +62,6 @@ function* fetchPerson() {
   }
 }
 
-export function* githubSaga() {
+export function* rootSaga() {
   yield takeLatest(actions.fetchUsers.type, fetchPerson);
 }

@@ -1,4 +1,6 @@
-export const selectUsers = (state) => state.github.users;
-export const selectProcess = (state) => state.github.process;
-export const selectError = (state) => state.github.error;
-export const selectSince = (state) => state.github.since;
+import type { GithubState } from '../config';
+
+export const users = (state: GithubState) => state.users;
+export const process = (state: GithubState) => state.process;
+export const error = (state: GithubState) => state.error;
+export const since = (state: GithubState) => state.since;

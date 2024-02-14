@@ -1,9 +1,9 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { PROCESS } from '@/shared/config';
+import type { GithubState } from '../config';
 import * as actions from './actions';
-import { TGithubState } from './types';
 
-const INITIAL_STATE: TGithubState = {
+const INITIAL_STATE: GithubState = {
   process: PROCESS.IDLE,
   error: null,
   users: [],
